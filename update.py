@@ -23,5 +23,5 @@ for response in response_list:
 
 json_dict['contents'] = info_list
 json_dict['date'] = response_list[0].json()['date']
-with open('./daily.json', 'w', encoding='utf-8') as file:
+with open('daily.json', 'w', encoding='utf-8') as file:
     file.write(json.dumps(json_dict, ensure_ascii=False))
