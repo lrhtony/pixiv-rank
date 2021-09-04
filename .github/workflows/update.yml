@@ -47,10 +47,10 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install grequests==0.6.0
-      # 执行python脚本
+
       - name: update daily.json
-        run: python update.py
-	  # git 提交文件
+        run: python ./update.py
+
       - name: Commit files
         run: |
           git config --local user.email "tony07017@163.com"
