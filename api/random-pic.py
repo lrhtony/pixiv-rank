@@ -26,7 +26,7 @@ def random_picture_route():
 
 
 def random_picture(pic_type: str, enable_sex: int):
-    contents = requests.get('https://cdn.jsdelivr.net/gh/lrhtony/pixiv-rank@master/daily.json').json()['contents']
+    contents = requests.get('https://cdn.jsdelivr.net/gh/lrhtony/pixiv-rank/daily.json').json()['contents']
     while True:
         content = random.choice(contents)
         pic_width = content['width']
