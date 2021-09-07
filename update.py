@@ -17,7 +17,8 @@ for response in response_list:
         information = {'title': i['title'], 'illust_page_count': i['illust_page_count'], 'illust_id': i['illust_id'],
                        'user_name': i['user_name'], 'user_id': i['user_id'], 'width': i['width'], 'height': i['height'],
                        'rank': i['rank'], 'illust_upload_timestamp': i['illust_upload_timestamp'],
-                       'illust_content_type': i['illust_content_type']}
+                       'illust_content_type': i['illust_content_type'],
+                       'url': i['url'].replace('/c/240x480/img-master/', '/img-original/').replace('_master1200', '')}
         info_list.append(information)
 
 
