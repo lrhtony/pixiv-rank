@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 import requests
 import random
+import json
 
 app = Flask(__name__)
 
@@ -26,7 +27,8 @@ def random_picture_route():
 
 
 def random_picture(pic_type: str, enable_sex: int):
-    contents = requests.get('https://cdn.jsdelivr.net/gh/lrhtony/pixiv-rank/daily.json').json()['contents']
+    with open('daily.json', 'r', encoding='utf-8') as file:
+        contents = json.loads(file.read())['contents']
     while True:
         content = random.choice(contents)
         pic_width = content['width']
