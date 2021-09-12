@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<head>
+    <title>P站日榜随机图</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+</head>
+<body>
+    <h1>Pixiv日榜随机插画</h1>
+    <h2>展示</h2>
+    刷新切换图片<br>
+    电脑默认横图，手机默认竖图<br>
+    默认关闭色图（由P站提供分类，可能不准确）<br>
+    网页展示暂时不提供修改设置的方法<br>
+    <img id="image-show" src="" width="100%">
+    标题：<span id="illust_title"></span><br>
+    pid：<a id="pid" href="" target="_blank"></a><br>
+    作者：<a id="user" href="" target="_blank"></a><br>
+    排名：<span id="rank"></span><br>
+    上传时间：<span id="upload_time"></span>
+
+    <h2>api</h2>
+    <a href="https://pixiv.shojo.cn/api/random-pic" target="_blank">https://pixiv.shojo.cn/api/random-pic</a><br>
+    使用GET请求，参数：<br>
+    type: pc, phone, square, all<br>
+    sex: 0, 1 <br>
+    format: json, raw
+
+    <h2>其他</h2>
+    仓库：<a href="https://github.com/lrhtony/pixiv-rank" target="_blank">https://github.com/lrhtony/pixiv-rank</a><br>
+    感谢反向代理<a href="https://pixiv.cat" target="_blank">https://pixiv.cat</a><br>
+    请注意图片使用时的版权问题
+    <script>
+        function set_time(str){
+            var n = parseInt(str)*1000
+            var D = new Date(n)
+            var year = D.getFullYear()
+
+            var month = D.getMonth()+1
+            month = month<10?('0'+month):month
+
+            var day = D.getDate()
+            day = day<10?('0'+day):day
+
+            var hours = D.getHours()
+            hours = hours<10?('0'+hours):hours
+
+            var minutes = D.getMinutes()
+            minutes = minutes<10?('0'+minutes):minutes
+
+            var now_time = year+'-'+month+'-'+day+' '+hours+':'+minutes
+            return now_time
+        }
+
+        var ua = navigator.userAgent
+        var httpRequest = new XMLHttpRequest()
+        if(/(?:Android)/.test(ua) || /(?:iPhone)/.test(ua)){
+            console.log('phone')
+            httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random-pic?type=phone', true)
+        }
+        else{
+            console.log('pc')
+            httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random-pic?type=pc', true)
+        }
+
+        httpRequest.send()
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                var data = JSON.parse(httpRequest.responseText)
+                document.getElementById('image-show').src=data.url
+                document.getElementById('illust_title').innerHTML=data.title
+                document.getElementById('pid').href='https://www.pixiv.net/artworks/'+data.illust_id
+                document.getElementById('pid').innerHTML=data.illust_id
+                document.getElementById('user').href='https://www.pixiv.net/users/'+data.user_id
+                document.getElementById('user').innerHTML=data.user_name
+                document.getElementById('rank').innerHTML=data.rank
+                document.getElementById('upload_time').innerHTML=set_time(data.upload_timestamp)
+            }
+        };
+    </script>
+</body>

@@ -50,7 +50,6 @@ def random_picture(pic_type: str, enable_sex: int, return_format: str, proxy: st
             break
 
     illust_id = content['illust_id']
-    print(illust_id)
     illust_upload_timestamp = content['illust_upload_timestamp']
     rank = content['rank']
     title = content['title']
