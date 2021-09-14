@@ -32,7 +32,7 @@
 | upload_timestamp | num | 上传时间 | 上传时间戳 |
 | url | str | 图片链接 | 带proxy的链接 |
 | user_id | num | 用户id |
-| user_name | str | 用户名 |
+| user_name | str | 用户名 | unicode编码 |
 
 **raw重定向回复：**
 
