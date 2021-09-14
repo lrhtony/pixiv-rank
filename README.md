@@ -5,8 +5,6 @@
 
 
 ## 展示
-![pixiv随机日榜](https://pixiv.shojo.cn/api/random-pic?format=raw)
-
 <https://pixiv.shojo.cn>
 
 
