@@ -3,7 +3,7 @@
     <title>P站日榜随机图</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" /> 
 </head>
-<body>
+<body onload="get_illust()">
     <h1>Pixiv日榜随机插画</h1>
     <h2>展示</h2>
     刷新切换图片<br>
@@ -16,14 +16,16 @@
     pid：<a id="pid" href="" target="_blank"></a><br>
     作者：<a id="user" href="" target="_blank"></a><br>
     排名：<span id="rank"></span><br>
-    上传时间：<span id="upload_time"></span>
+    上传时间：<span id="upload_time"></span><br>
+    <button type="button" name="change_illust" value="刷新" onclick="get_illust()">切换图片</button> 
 
     <h2>api</h2>
     <a href="https://pixiv.shojo.cn/api/random-pic" target="_blank">https://pixiv.shojo.cn/api/random-pic</a><br>
     使用GET请求，参数：<br>
     type: pc, phone, square, all<br>
     sex: 0, 1 <br>
-    format: json, raw
+    format: json, raw<br>
+    proxy: 图片反代地址，如链接中含其他参数可使用encodeURIComponent
 
     <h2>其他</h2>
     仓库：<a href="https://github.com/lrhtony/pixiv-rank" target="_blank">https://github.com/lrhtony/pixiv-rank</a><br>
@@ -52,20 +54,29 @@
         }
 
         var ua = navigator.userAgent
-        var httpRequest = new XMLHttpRequest()
+
         if(/(?:Android)/.test(ua) || /(?:iPhone)/.test(ua)){
             console.log('phone')
-            httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random-pic?type=phone', true)
+            var device = 'phone' 
         }
         else{
             console.log('pc')
-            httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random-pic?type=pc', true)
+            var device = 'pc'
         }
 
-        httpRequest.send()
-        httpRequest.onreadystatechange = function () {
+        function get_illust(){
+            var httpRequest = new XMLHttpRequest()
+            if(device == 'phone'){
+                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random-pic?type=phone', true)
+            }
+            else if(device == 'pc'){
+                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random-pic?type=pc', true)
+            }
+            httpRequest.send()
+            httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState == 4 && httpRequest.status == 200) {
                 var data = JSON.parse(httpRequest.responseText)
+                document.getElementById('image-show').src=''
                 document.getElementById('image-show').src=data.url
                 document.getElementById('illust_title').innerHTML=data.title
                 document.getElementById('pid').href='https://www.pixiv.net/artworks/'+data.illust_id
@@ -75,6 +86,8 @@
                 document.getElementById('rank').innerHTML=data.rank
                 document.getElementById('upload_time').innerHTML=set_time(data.upload_timestamp)
             }
-        };
+            }
+        }
+
     </script>
 </body>
