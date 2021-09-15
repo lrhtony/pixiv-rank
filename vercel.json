@@ -3,10 +3,6 @@
     "silent": true
   },
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "headers": {"Access-Control-Allow-Origin": "*"}
-    },
     { "src": "/api/(.*)", "dest": "/api/index.py" }
   ]
 }
