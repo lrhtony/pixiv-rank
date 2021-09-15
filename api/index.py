@@ -9,7 +9,7 @@ app = Flask(__name__)
 '''---------------------------------------------下面是主入口---------------------------------------------'''
 
 
-@app.route('/api/v0/random', methods=['GET'])
+@app.route('/api/random', methods=['GET'])
 def random_picture_route():
     pic_type = request.args.get('type')
     enable_sex = request.args.get('sex')
@@ -29,7 +29,7 @@ def random_picture_route():
     pic = random_picture(pic_type, enable_sex, return_format, proxy)
     return pic
 
-@app.route('/api/v0/proxy', methods=['GET'])
+@app.route('/api/proxy', methods=['GET'])
 def illust_proxy():
     return 'test_success'
 

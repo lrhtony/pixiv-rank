@@ -12,7 +12,11 @@
   ],
   "routes": [
     {
-      "src": "/api/v0/(.*)",
+      "src": "/api/random",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/api/proxy",
       "dest": "/api/index.py"
     }
   ]
