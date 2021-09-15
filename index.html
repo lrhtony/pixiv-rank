@@ -20,7 +20,7 @@
     <button type="button" name="change_illust" value="刷新" onclick="get_illust()">切换图片</button> 
 
     <h2>api</h2>
-    <a href="https://pixiv.shojo.cn/api/random-pic" target="_blank">https://pixiv.shojo.cn/api/random-pic</a><br>
+    <a href="https://pixiv.shojo.cn/api/random" target="_blank">https://pixiv.shojo.cn/api/random</a><br>
     使用GET请求，参数：<br>
     type: pc, phone, square, all<br>
     sex: 0, 1 <br>
@@ -67,10 +67,10 @@
         function get_illust(){
             var httpRequest = new XMLHttpRequest()
             if(device == 'phone'){
-                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random-pic?type=phone', true)
+                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=phone', true)
             }
             else if(device == 'pc'){
-                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random-pic?type=pc', true)
+                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=pc', true)
             }
             httpRequest.send()
             httpRequest.onreadystatechange = function () {

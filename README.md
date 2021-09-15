@@ -9,7 +9,7 @@
 
 
 ## 请求方式
-> https://pixiv.shojo.cn/api/random-pic
+> https://pixiv.shojo.cn/api/random
 
 *请求方式：GET*
 
