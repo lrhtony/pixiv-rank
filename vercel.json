@@ -2,22 +2,11 @@
   "github": {
     "silent": true
   },
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" }
-      ]
-    }
-  ],
   "routes": [
     {
-      "src": "/api/random",
-      "dest": "/api/index.py"
+      "src": "/api/(.*)",
+      "headers": {"Access-Control-Allow-Origin": "*"}
     },
-    {
-      "src": "/api/proxy",
-      "dest": "/api/index.py"
-    }
+    { "src": "/api/(.*)", "dest": "/api/index.py" }
   ]
 }
