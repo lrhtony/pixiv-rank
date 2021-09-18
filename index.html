@@ -67,10 +67,10 @@
         function get_illust(){
             var httpRequest = new XMLHttpRequest()
             if(device == 'phone'){
-                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=phone', true)
+                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=phone&proxy=https://proxy.pixiv.shojo.cn', true)
             }
             else if(device == 'pc'){
-                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=pc', true)
+                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=pc&proxy=https://proxy.pixiv.shojo.cn', true)
             }
             httpRequest.send()
             httpRequest.onreadystatechange = function () {
