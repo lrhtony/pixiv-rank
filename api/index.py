@@ -2,6 +2,8 @@
 from flask import Flask, request, jsonify, redirect
 import random
 import json
+import requests
+import re
 from urllib import parse
 
 app = Flask(__name__)
@@ -14,10 +16,10 @@ def random_picture_route():
     pic_type = request.args.get('type')
     enable_sex = request.args.get('sex')
     return_format = request.args.get('format')
-    proxy = request.args.get('proxy')
-    if proxy is None:  # 设置图片返回url的代理
-        proxy = 'https://i.pixiv.cat/'
-    proxy = parse.unquote(proxy)
+    proxy_url = request.args.get('proxy')
+    if proxy_url is None:  # 设置图片返回url的代理
+        proxy_url = 'https://i.pixiv.cat'
+    proxy_url = parse.unquote(proxy_url)
     if pic_type != 'pc' and pic_type != 'phone' and pic_type != 'square' and pic_type != 'all':  # 图片样式
         pic_type = 'all'
     if enable_sex == 'True' or enable_sex == 'true' or enable_sex == '1':  # 处理那些sex=1的图片，决定是否屏蔽
@@ -26,17 +28,32 @@ def random_picture_route():
         enable_sex = 0
     if return_format != 'json' and return_format != 'raw':  # 返回信息样式，raw则重定向到图片
         return_format = 'json'
-    pic = random_picture(pic_type, enable_sex, return_format, proxy)
+    pic = random_picture(pic_type, enable_sex, return_format, proxy_url)
     return pic
+
 
 @app.route('/api/proxy', methods=['GET'])
 def illust_proxy():
-    return 'test_success'
+    path = request.args.get('path')
+    if path is not None:
+        path = parse.unquote(path)
+        hostname = parse.urlparse(path).hostname
+        url_path = parse.urlparse(path).path
+        if hostname == 'i.pximg.net' or hostname == 'i.pixiv.cat' or hostname is None:
+            file_type = re.search('\.jpg', url_path)
+            if file_type is not None:
+                headers = {'Content-Type': 'image/jpeg'}
+            else:
+                headers = {'Content-Type': 'image/png'}
+            result = proxy(url_path)
+            return result, 200, headers
+    return 'Error'
+
 
 '''---------------------------------------------下面是主函数部分---------------------------------------------'''
 
 
-def random_picture(pic_type: str, enable_sex: int, return_format: str, proxy: str):
+def random_picture(pic_type: str, enable_sex: int, return_format: str, proxy_url: str):
     with open('daily.json', 'r', encoding='utf-8') as file:
         contents = json.loads(file.read())['contents']
     while True:
@@ -58,7 +75,7 @@ def random_picture(pic_type: str, enable_sex: int, return_format: str, proxy: st
     title = content['title']
     user_id = content['user_id']
     user_name = content['user_name']
-    url = content['url'].replace('https://i.pximg.net/', proxy)
+    url = proxy_url + parse.urlparse(content['url']).path
     pic_info = {
         'illust_id': illust_id,
         'url': url,
@@ -75,6 +92,16 @@ def random_picture(pic_type: str, enable_sex: int, return_format: str, proxy: st
         del pic_info['user_name']
         del pic_info['url']
         return redirect(url, 307), 307, pic_info
+
+
+def proxy(path: str):
+    headers = {
+        'Referer': 'https://www.pixiv.net/',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/90.0.0.0 Safari/537.36 '
+    }
+    content = requests.get('https://i.pximg.net'+path, headers=headers).content
+    return content
 
 
 if __name__ == '__main__':
