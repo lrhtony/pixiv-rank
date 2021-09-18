@@ -2,8 +2,6 @@
 from flask import Flask, request, jsonify, redirect
 import random
 import json
-import requests
-import re
 from urllib import parse
 
 app = Flask(__name__)
@@ -30,24 +28,6 @@ def random_picture_route():
         return_format = 'json'
     pic = random_picture(pic_type, enable_sex, return_format, proxy_url)
     return pic
-
-
-@app.route('/api/proxy', methods=['GET'])
-def illust_proxy():
-    path = request.args.get('path')
-    if path is not None:
-        path = parse.unquote(path)
-        hostname = parse.urlparse(path).hostname
-        url_path = parse.urlparse(path).path
-        if hostname == 'i.pximg.net' or hostname == 'i.pixiv.cat' or hostname is None:
-            file_type = re.search('\.jpg', url_path)
-            if file_type is not None:
-                headers = {'Content-Type': 'image/jpeg'}
-            else:
-                headers = {'Content-Type': 'image/png'}
-            result = proxy(url_path)
-            return result, 200, headers
-    return 'Error'
 
 
 '''---------------------------------------------下面是主函数部分---------------------------------------------'''
@@ -94,14 +74,6 @@ def random_picture(pic_type: str, enable_sex: int, return_format: str, proxy_url
         return redirect(url, 307), 307, pic_info
 
 
-def proxy(path: str):
-    headers = {
-        'Referer': 'https://www.pixiv.net/',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                      'Chrome/90.0.0.0 Safari/537.36 '
-    }
-    content = requests.get('https://i.pximg.net'+path, headers=headers).content
-    return content
 
 
 if __name__ == '__main__':
