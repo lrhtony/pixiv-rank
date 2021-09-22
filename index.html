@@ -3,7 +3,7 @@
     <title>P站日榜随机图</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" /> 
 </head>
-<body onload="get_illust()">
+<body onload="">
     <h1>Pixiv日榜随机插画</h1>
     <h2>展示</h2>
     刷新切换图片<br>
@@ -11,13 +11,14 @@
     默认关闭色图（由P站提供分类，可能不准确）<br>
     漫画插画的分类由上传者自行提供，因此可能会有部分漫画在插画里<br>
     网页展示暂时不提供修改设置的方法<br>
+    <h1>维护中...</h1>
     <img id="image-show" src="" width="100%">
     标题：<span id="illust_title"></span><br>
     pid：<a id="pid" href="" target="_blank"></a><br>
     作者：<a id="user" href="" target="_blank"></a><br>
     排名：<span id="rank"></span><br>
     上传时间：<span id="upload_time"></span><br>
-    <button type="button" name="change_illust" value="刷新" onclick="get_illust()">切换图片</button> 
+    <button type="button" name="change_illust" value="刷新" onclick="">切换图片</button>
 
     <h2>api</h2>
     <a href="https://pixiv.shojo.cn/api/random" target="_blank">https://pixiv.shojo.cn/api/random</a><br>
