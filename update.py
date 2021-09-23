@@ -2,6 +2,7 @@
 import gevent.monkey
 gevent.monkey.patch_all()
 import sys
+import time
 from pixivpy3 import *
 import grequests
 import requests
@@ -54,13 +55,24 @@ for response in response_list:
 
 
 # 获取图片信息部分
+times = 0
 info_list2 = []
 api = AppPixivAPI()
 api.set_auth(access_token, refresh_token)
 for info in info_list1:
+    times += 1
+    print(times)
     illust_id = info['illust_id']
-    json_result = api.illust_detail(illust_id)
-    illust = json_result.illust
+    error_times = 0
+    while error_times <= 5:
+        json_result = api.illust_detail(illust_id)
+        illust = json_result.illust
+        if illust is not None:
+            break
+        else:
+            error_times += 1
+            print('error:'+str(error_times))
+            time.sleep(60)
     sanity_level = illust['sanity_level']
     total_view = illust['total_view']
     total_bookmarks = illust['total_bookmarks']
