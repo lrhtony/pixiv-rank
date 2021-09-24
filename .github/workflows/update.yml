@@ -43,7 +43,6 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install grequests==0.6.0
-          pip install pixivpy==3.6.0
 
       - name: update daily.json
         env:
