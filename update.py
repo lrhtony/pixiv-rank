@@ -31,7 +31,6 @@ data = response.json()
 try:
     access_token = data["access_token"]
     refresh_token = data["refresh_token"]
-    print(access_token)
 except KeyError:
     print("error:")
     sys.exit(1)
