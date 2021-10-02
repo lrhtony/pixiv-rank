@@ -32,7 +32,7 @@ try:
     access_token = data["access_token"]
     refresh_token = data["refresh_token"]
 except KeyError:
-    print("error:")
+    print("error!")
     sys.exit(1)
 
 # 获取排行榜部分
@@ -80,7 +80,6 @@ while len(info_list1) != 0:
         if response_list2[response_num].status_code == 200:
             info_list_index = response_num - delete_count  # response_list2在默认情况下与info_list1索引相对应，但删除元素后需前移
             illust = response_list2[response_num].json()['illust']  # 获取返回数据
-            print(illust)
             info = info_list1[info_list_index]  # 继承原有数据
             sanity_level = illust['sanity_level']
             total_view = illust['total_view']
@@ -108,5 +107,5 @@ for i in range(1, len(remake)+1):
     info_list2.append(remake[i])
 json_dict['contents'] = info_list2
 json_dict['date'] = response_list1[0].json()['date']
-with open('daily.json', 'w', encoding='utf-8') as file:
+with open('../daily.json', 'w', encoding='utf-8') as file:
     file.write(json.dumps(json_dict, ensure_ascii=False))

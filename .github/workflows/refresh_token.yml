@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: update
+name: refresh token
 
 # Controls when the action will run.
 on:
@@ -42,40 +42,14 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install grequests==0.6.0
+          pip install requests==2.25.1
+          pip install pynacl==1.4.0
 
-      - name: update daily.json
-        env:
-          PIXIV_REFRESH_TOKEN: ${{ secrets.PIXIV_REFRESH_TOKEN }}
-        run: python ./scripts/update.py "$PIXIV_REFRESH_TOKEN"
-
-      - name: Commit files
-        run: |
-          git config --local user.email "tony07017@163.com"
-          git config --local user.name "lrhtony"
-          git add .
-          git commit -m "update daily.json `date '+%Y-%m-%d %H:%M:%S'`"
-      # 推送到github仓库
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
-      - name: upload image
+      - name: Refresh Bilibili Token
         env:
           BILI_ACCESS_TOKEN: ${{ secrets.BILI_ACCESS_TOKEN }}
-        run: python ./scripts/upload_img.py "$BILI_ACCESS_TOKEN"
+          BILI_REFRESH_TOKEN: ${{ secrets.BILI_REFRESH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: python ./scripts/refresh_token.py "$BILI_ACCESS_TOKEN" "$BILI_REFRESH_TOKEN" "$GH_TOKEN"
 
-      - name: Commit files
-        run: |
-          git config --local user.email "tony07017@163.com"
-          git config --local user.name "lrhtony"
-          git add .
-          git commit -m " upload image `date '+%Y-%m-%d %H:%M:%S'`"
-      # 推送到github仓库
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+

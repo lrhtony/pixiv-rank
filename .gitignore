@@ -2,3 +2,5 @@ cron-my.py
 leancloud-cron
 test-*
 .idea
+scripts/token.json
+scripts/gh_token.txt
