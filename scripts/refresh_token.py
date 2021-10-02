@@ -21,6 +21,7 @@ def refresh(bili_access_token: str, bili_refresh_token: str):
     }
     post_data['sign'] = _sign_dict(post_data, 'c75875c596a69eb55bd119e74b07cfe3')
     response = requests.post(url, data=post_data).json()
+    print(response)
     return response['data']['token_info']['access_token'], response['data']['token_info']['refresh_token']
 
 
