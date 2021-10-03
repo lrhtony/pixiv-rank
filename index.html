@@ -6,15 +6,15 @@
 <body onload="get_illust()">
     <h1>Pixiv日榜随机插画</h1>
     <h2>展示</h2>
-    刷新切换图片<br>
+    刷新或点击按钮切换图片<br>
     电脑默认横图，手机默认竖图<br>
     默认关闭色图（由P站提供分类，可能不准确）<br>
     漫画插画的分类由上传者自行提供，因此可能会有部分漫画在插画里<br>
-    网页展示暂时不提供修改设置的方法<br>
+    若要修改此网页展示图片的默认设置，自己翻源码，不难<br>
     <img id="image-show" src="" width="100%" referrerpolicy="no-referrer">
     标题：<span id="illust_title"></span><br>
     pid：<a id="pid" href="" target="_blank"></a><br>
-    tag：<span id="tags"></span>
+    tags：<span id="tags"></span>
     作者：<a id="user" href="" target="_blank"></a><br>
     排名：<span id="rank"></span><br>
     上传时间：<span id="upload_time"></span><br>
@@ -58,21 +58,34 @@
 
         if(/(?:Android)/.test(ua) || /(?:iPhone)/.test(ua)){
             console.log('phone')
-            var device = 'phone' 
+            var type1 = 'phone' 
         }
         else{
             console.log('pc')
-            var device = 'pc'
+            var type1 = 'pc'
         }
+        var param_string = ''
+        var params = new URLSearchParams(window.location.search)
+        var type2 = params.get('type')
+        if(type2 != null){
+            param_string = param_string + '?type=' + type2
+        }
+        else{
+            param_string = param_string + '?type=' + type1
+        }
+        var sex = params.get('sex')
+        if(sex != null){
+            param_string = param_string + '&sex=' + sex
+        }
+        var proxy = params.get('proxy')
+        if(proxy != null){
+            param_string = param_string + '&proxy=' + proxy
+        }
+        var request_url = 'https://pixiv.shojo.cn/api/random' + param_string
 
         function get_illust(){
             var httpRequest = new XMLHttpRequest()
-            if(device == 'phone'){
-                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=phone', true)
-            }
-            else if(device == 'pc'){
-                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=pc', true)
-            }
+            httpRequest.open('GET', request_url)
             httpRequest.send()
             httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState == 4 && httpRequest.status == 200) {
