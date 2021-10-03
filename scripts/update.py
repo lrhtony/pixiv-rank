@@ -4,6 +4,7 @@ import time
 import grequests
 import requests
 import json
+import secrets
 
 USER_AGENT = "PixivAndroidApp/5.0.234 (Android 11; Pixel 5)"
 AUTH_TOKEN_URL = "https://oauth.secure.pixiv.net/auth/token"
@@ -107,5 +108,6 @@ for i in range(1, len(remake)+1):
     info_list2.append(remake[i])
 json_dict['contents'] = info_list2
 json_dict['date'] = response_list1[0].json()['date']
+json_dict['random_key'] = secrets.token_urlsafe(6)
 with open('daily.json', 'w', encoding='utf-8') as file:
     file.write(json.dumps(json_dict, ensure_ascii=False))

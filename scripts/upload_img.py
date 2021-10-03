@@ -18,7 +18,7 @@ start_time = time.time()
     #access_token = json.loads(access_file.read())['access_token']
 access_token = sys.argv[1]
 
-with open('../daily.json', 'r', encoding='utf-8') as rank_file:
+with open('daily.json', 'r', encoding='utf-8') as rank_file:
     daily_rank = json.loads(rank_file.read())
     daily_list = daily_rank['contents']
 
