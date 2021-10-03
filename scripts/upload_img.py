@@ -87,7 +87,7 @@ for daily_list_index in range(len(daily_list)):
         request_list_index = 0
         index_map = {}
 
-with open('../daily.json', 'w', encoding='utf-8') as rank_file_new:
+with open('daily.json', 'w', encoding='utf-8') as rank_file_new:
     daily_rank['contents'] = daily_list
     rank_file_new.write(json.dumps(daily_rank, ensure_ascii=False))
 

@@ -37,7 +37,7 @@ except KeyError:
 
 # 获取排行榜部分
 request_list = []
-for pages in range(1, 11):
+for pages in range(1, 2):
     request_list.append(grequests.get('https://www.pixiv.net/ranking.php?mode=daily&content=illust&p=%s&format=json'
                                       % (str(pages))))
 response_list1 = grequests.map(request_list)
@@ -51,7 +51,7 @@ for response in response_list1:
                        'rank': i['rank'], 'illust_upload_timestamp': i['illust_upload_timestamp']}
         info_list1.append(information)
 
-
+print(response_list1[0].json()['date'])
 # 获取图片信息部分
 url = 'https://app-api.pixiv.net/v1/illust/detail'
 headers = {
@@ -107,5 +107,5 @@ for i in range(1, len(remake)+1):
     info_list2.append(remake[i])
 json_dict['contents'] = info_list2
 json_dict['date'] = response_list1[0].json()['date']
-with open('../daily.json', 'w', encoding='utf-8') as file:
+with open('daily.json', 'w', encoding='utf-8') as file:
     file.write(json.dumps(json_dict, ensure_ascii=False))
