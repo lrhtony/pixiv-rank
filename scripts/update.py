@@ -38,7 +38,7 @@ except KeyError:
 
 # 获取排行榜部分
 request_list = []
-for pages in range(1, 2):
+for pages in range(1, 11):
     request_list.append(grequests.get('https://www.pixiv.net/ranking.php?mode=daily&content=illust&p=%s&format=json'
                                       % (str(pages))))
 response_list1 = grequests.map(request_list)
