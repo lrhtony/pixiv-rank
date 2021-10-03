@@ -11,7 +11,7 @@
     默认关闭色图（由P站提供分类，可能不准确）<br>
     漫画插画的分类由上传者自行提供，因此可能会有部分漫画在插画里<br>
     若要修改此网页展示图片的默认设置，自己翻源码，不难<br>
-    <img id="image-show" src="" width="100%" referrerpolicy="no-referrer">
+    <a href="" target="_blank" referrerpolicy="no-referrer" id="image-url"><img id="image-show" src="" width="100%" referrerpolicy="no-referrer"></a>
     标题：<span id="illust_title"></span><br>
     pid：<a id="pid" href="" target="_blank"></a><br>
     tags：<span id="tags"></span>
@@ -32,6 +32,7 @@
     仓库：<a href="https://github.com/lrhtony/pixiv-rank" target="_blank">https://github.com/lrhtony/pixiv-rank</a><br>
     感谢反向代理<a href="https://pixiv.cat" target="_blank">https://pixiv.cat</a><br>
     请注意图片使用时的版权问题，图片版权归原作者所有
+    若您发现该图片不适宜展示，请联系<a href="mailto:contact@lrhtony.cn">contact@lrhtony.cn</a>
     <script>
         function set_time(str){
             var n = parseInt(str)*1000
@@ -107,9 +108,11 @@
                 document.getElementById('image-show').src = ''
                 if(data.backup_url == null){
                     document.getElementById('image-show').src = data.url
+                    document.getElementById('image-url').href = data.url
                 }
                 else{
                     document.getElementById('image-show').src = data.backup_url
+                    document.getElementById('image-url').href = data.backup_url
                 }
             }
             }
