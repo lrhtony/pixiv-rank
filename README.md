@@ -31,6 +31,7 @@
 | title | str | 标题 | unicode编码 |
 | upload_timestamp | num | 上传时间 | 上传时间戳 |
 | url | str | 图片链接 | 带proxy的链接 |
+| backup_url | str | 图片备份链接 | 可能为null |
 | user_id | num | 用户id |
 | user_name | str | 用户名 | unicode编码 |
 

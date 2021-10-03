@@ -3,7 +3,7 @@
     <title>P站日榜随机图</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" /> 
 </head>
-<body onload="">
+<body onload="get_illust()">
     <h1>Pixiv日榜随机插画</h1>
     <h2>展示</h2>
     刷新切换图片<br>
@@ -11,14 +11,14 @@
     默认关闭色图（由P站提供分类，可能不准确）<br>
     漫画插画的分类由上传者自行提供，因此可能会有部分漫画在插画里<br>
     网页展示暂时不提供修改设置的方法<br>
-    <h1>维护中...</h1>
-    <img id="image-show" src="" width="100%">
+    <img id="image-show" src="" width="100%" referrerpolicy="no-referrer">
     标题：<span id="illust_title"></span><br>
     pid：<a id="pid" href="" target="_blank"></a><br>
+    tag：<span id="tags"></span>
     作者：<a id="user" href="" target="_blank"></a><br>
     排名：<span id="rank"></span><br>
     上传时间：<span id="upload_time"></span><br>
-    <button type="button" name="change_illust" value="刷新" onclick="">切换图片</button>
+    <button type="button" name="change_illust" value="刷新" onclick="get_illust()">切换图片</button>
 
     <h2>api</h2>
     <a href="https://pixiv.shojo.cn/api/random" target="_blank">https://pixiv.shojo.cn/api/random</a><br>
@@ -68,24 +68,36 @@
         function get_illust(){
             var httpRequest = new XMLHttpRequest()
             if(device == 'phone'){
-                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=phone&proxy=https://proxy.pixiv.shojo.cn', true)
+                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=phone', true)
             }
             else if(device == 'pc'){
-                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=pc&proxy=https://proxy.pixiv.shojo.cn', true)
+                httpRequest.open('GET', 'https://pixiv.shojo.cn/api/random?type=pc', true)
             }
             httpRequest.send()
             httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState == 4 && httpRequest.status == 200) {
                 var data = JSON.parse(httpRequest.responseText)
-                document.getElementById('image-show').src=''
-                document.getElementById('image-show').src=data.url
-                document.getElementById('illust_title').innerHTML=data.title
-                document.getElementById('pid').href='https://www.pixiv.net/artworks/'+data.illust_id
-                document.getElementById('pid').innerHTML=data.illust_id
-                document.getElementById('user').href='https://www.pixiv.net/users/'+data.user_id
-                document.getElementById('user').innerHTML=data.user_name
-                document.getElementById('rank').innerHTML=data.rank
-                document.getElementById('upload_time').innerHTML=set_time(data.upload_timestamp)
+                document.getElementById('illust_title').innerHTML = data.title
+                document.getElementById('pid').href = 'https://www.pixiv.net/artworks/' + data.illust_id
+                document.getElementById('pid').innerHTML = data.illust_id
+                document.getElementById('user').href = 'https://www.pixiv.net/users/' + data.user_id
+                document.getElementById('user').innerHTML = data.user_name
+                document.getElementById('rank').innerHTML = data.rank
+                document.getElementById('upload_time').innerHTML = set_time(data.upload_timestamp)
+                var tags = data.tags
+                var tag_string = '<ul type="disc"><li>' + tags[0]
+                for (let i = 1; i < tags.length; i++) {
+                    tag_string = tag_string + '</li><li>' + tags[i]
+                }
+                tag_string = tag_string + '</li></ul>'
+                document.getElementById('tags').innerHTML = tag_string
+                document.getElementById('image-show').src = ''
+                if(data.backup_url == null){
+                    document.getElementById('image-show').src = data.url
+                }
+                else{
+                    document.getElementById('image-show').src = data.backup_url
+                }
             }
             }
         }
