@@ -16,7 +16,7 @@ def random_picture_route():
     return_format = request.args.get('format')
     proxy_url = request.args.get('proxy')
     if proxy_url is None:  # 设置图片返回url的代理
-        proxy_url = 'https://i.pixiv.cat'
+        proxy_url = 'https://i.pixiv.re'
     proxy_url = parse.unquote(proxy_url)
     if pic_type != 'pc' and pic_type != 'phone' and pic_type != 'square' and pic_type != 'all':  # 图片样式
         pic_type = 'all'
